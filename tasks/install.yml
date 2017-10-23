@@ -1,0 +1,38 @@
+---
+
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ tmux_install_packages }}"
+  failed_when: false
+  # do not use sudo on macOS
+  become: "{{ 'no' if ansible_os_family == 'Darwin' else 'yes' }}"
+
+- name: Clone tmux repo
+  git:
+    repo: https://github.com/tmux/tmux.git
+    dest: "{{ tmux_home }}/source"
+    version: "{{ tmux_tag_version }}"
+
+- name: Run tmux autogen.sh script
+  shell: sh autogen.sh
+  args:
+    chdir: "{{ tmux_home }}/source"
+
+- name: Run tmux ./configure && make
+  shell: ./configure && make
+  args:
+    chdir: "{{ tmux_home }}/source"
+
+- name: Run tmux make install
+  become: yes
+  shell: make install
+  args:
+    chdir: "{{ tmux_home }}/source"
+
+- name: Clean up
+  file:
+    state: absent
+    path: "{{ tmux_home }}/source/"
+

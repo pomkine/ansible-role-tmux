@@ -1,0 +1,24 @@
+---
+
+- name: Clone tmux plugin manager
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ tmux_home }}/plugins/tpm"
+
+- name: Check tmux version
+  shell: tmux -V | cut -d ' ' -f 2
+  register: tmux_register_version
+  changed_when: false
+
+- name: Set tmux_version variable
+  set_fact:
+    tmux_version: "{{ tmux_register_version.stdout }}"
+
+
+- name: Write .tmux.conf config
+  template:
+    src: tmux.j2
+    dest: "{{ tmux_config }}"
+    owner: "{{ tmux_user }}"
+    group: "{{ tmux_user_group }}"
+    backup: yes

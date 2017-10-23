@@ -1,0 +1,8 @@
+---
+
+- import_tasks: preinstall.yml
+
+- import_tasks: install.yml
+  when: tmux_need_update
+
+- import_tasks: configure.yml
