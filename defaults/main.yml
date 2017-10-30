@@ -7,6 +7,7 @@ tmux_install_packages:
   - automake
   - pkg-config
 
+tmux_is_macos: "{{ 'true' if ansible_os_family == 'Darwin' else 'no' }}"
 tmux_user: "{{ ansible_user_id }}"
 tmux_user_group: "{{ tmux_user }}"
 
@@ -15,4 +16,3 @@ tmux_config: "~{{ tmux_user }}/.tmux.conf"
 
 tmux_tag_version: "2.6"
 tmux_update_if_needed: true
-

@@ -1,9 +1,15 @@
 ---
+- debug:
+    msg: "ansible_os_family: {{ ansible_os_family }}"
+
+- debug:
+    msg: "Is macOS? {{ tmux_is_macos }}"
 
 - name: Check tmux installation
   shell: "command -v tmux||which tmux||which /usr/local/bin/tmux"
   register: "tmux_check_install_result"
   failed_when: false
+  changed_when: false
 
 - set_fact:
     tmux_installed: "{{ tmux_check_install_result.rc == 0 }}"
@@ -12,6 +18,7 @@
   shell: "tmux -V | cut -d ' ' -f 2"
   register: "tmux_check_installed_version"
   when: "tmux_installed"
+  changed_when: false
 
 - set_fact:
     tmux_installed_version: "{{ tmux_check_installed_version.stdout }}"
@@ -20,11 +27,16 @@
     msg: "Tmux installed version: {{ tmux_installed_version }}"
 
 - fail:
-   msg: "Needed tmux version >= 1.9"
-  when: "(tmux_installed) and (tmux_installed_version | version_compare('1.9', '<=')) and (not tmux_update_if_needed)"
+    msg: "Needed tmux version >= 1.9"
+  when: >
+    (tmux_installed)
+    and (tmux_installed_version | version_compare('1.9', '<='))
+    and (not tmux_update_if_needed)
 
 - set_fact:
-    tmux_need_update: "{{ (tmux_installed_version | version_compare('1.9', '<=')) and (tmux_update_if_needed) }}"
+    tmux_need_update: >
+      {{ (tmux_installed_version | version_compare('1.9', '<='))
+      and (tmux_update_if_needed) }}
 
 - debug:
     msg: "Tmux needs update: {{ tmux_need_update }}"

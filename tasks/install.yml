@@ -7,7 +7,7 @@
   with_items: "{{ tmux_install_packages }}"
   failed_when: false
   # do not use sudo on macOS
-  become: "{{ 'no' if ansible_os_family == 'Darwin' else 'yes' }}"
+  become: "{{ 'no' if tmux_is_macos==true else 'yes' }}"
 
 - name: Clone tmux repo
   git:
@@ -26,7 +26,7 @@
     chdir: "{{ tmux_home }}/source"
 
 - name: Run tmux make install
-  become: yes
+  become: "yes"
   shell: make install
   args:
     chdir: "{{ tmux_home }}/source"
@@ -35,4 +35,3 @@
   file:
     state: absent
     path: "{{ tmux_home }}/source/"
-

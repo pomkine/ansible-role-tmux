@@ -1,0 +1,4 @@
+{
+  "tests/test_tmux.py::test_passwd_file[ansible://instance]": true, 
+  "tests/test_tmux.py::test_tmux_config_file_is_in_place[ansible://instance]": true
+}

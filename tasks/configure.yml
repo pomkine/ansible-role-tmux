@@ -14,6 +14,8 @@
   set_fact:
     tmux_version: "{{ tmux_register_version.stdout }}"
 
+- debug:
+    msg: "Installed tmux version {{ tmux_version }}."
 
 - name: Write .tmux.conf config
   template:
@@ -21,4 +23,12 @@
     dest: "{{ tmux_config }}"
     owner: "{{ tmux_user }}"
     group: "{{ tmux_user_group }}"
-    backup: yes
+    backup: "yes"
+
+- name: Install tmux plugins with tpm
+  shell: "{{ tmux_home}}/plugins/tpm/bin/install_plugins"
+  register: tmux_tpm_install_plugins_out
+  changed_when: "'Installing' in tmux_tpm_install_plugins_out.stdout"
+
+- debug:
+    msg: "Install plugins output: {{ tmux_tpm_install_plugins_out }}"
