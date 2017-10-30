@@ -7,3 +7,7 @@
 
 # Vagrant
 .vagrant/
+
+# Molecule
+__pycache__/
+.cache/
