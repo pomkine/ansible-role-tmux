@@ -1,8 +1,11 @@
 ---
 
-- import_tasks: preinstall.yml
+- name: import preinstall
+  import_tasks: preinstall.yml
 
-- import_tasks: install.yml
+- name: import install
+  import_tasks: install.yml
   when: tmux_need_update
 
-- import_tasks: configure.yml
+- name: import configure
+  import_tasks: configure.yml

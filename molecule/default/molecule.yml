@@ -7,6 +7,7 @@ driver:
     name: virtualbox
 lint:
   name: yamllint
+  enabled: False
 platforms:
   - name: instance
     box: ubuntu/trusty64

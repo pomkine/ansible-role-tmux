@@ -11,4 +11,4 @@
 # Molecule
 __pycache__/
 .cache/
-molecule/default/.molecule/
+.molecule/
