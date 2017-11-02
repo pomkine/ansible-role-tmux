@@ -1,3 +1,3 @@
-# ansible-role-tmu
+# ansible-role-tmux
 
 TBD
